@@ -60,6 +60,3 @@ celery -A celery_beat_tasks.start_celery_beat beat -l info
 ```python
 celery -A celery_beat_tasks.start_celery_beat worker -P eventlet -c 3 -l info 
 ```
-
-
-

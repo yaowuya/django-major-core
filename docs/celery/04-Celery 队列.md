@@ -4,8 +4,6 @@ Celery非常容易设置和运行，它通常会使用默认名为Celery的队�
 
 我们来实现不同的队列来执行不同的任务：使任务add在队列default中运行；taskA在队列task_A中运行；taskB在队列task_B中运行。
 
-
-
 #### celery队列配置
 
 `celery_app/config/celery_config.py`
@@ -48,3 +46,31 @@ celery -A celery_queue_tasks.start_queue_celery worker -Q tasks_B -l info
 >>> add.delay(4,5);taskA.delay();taskB.delay()
 ```
 
+**任务的路由：**前述代码中决定任务具体在哪个队列运行（任务的路由）是通过下述代码所指定的。
+
+```python
+CELERY_ROUTES = (
+    [
+        ("celery_queue_tasks.celery_queue_task.add", {"queue": "default"}),  # 将add任务分配至队列 default
+        ("celery_queue_tasks.celery_queue_task.taskA", {"queue": "tasks_A"}),  # 将taskA任务分配至队列 tasks_A
+        ("celery_queue_tasks.celery_queue_task.taskB", {"queue": "tasks_B"}),  # 将taskB任务分配至队列 tasks_B
+    ],
+)
+```
+
+实际生产环境可能有多个任务需要路由，是否需要逐个去配置呢？当然不需要，批量分配任务到队列可以使用如下方法。
+
+![image-20221216170545709](04-Celery 队列.assets/image-20221216170545709.png)
+
+还可以使用正则表达式。 
+
+![image-20221216170630453](04-Celery 队列.assets/image-20221216170630453.png)
+
+更改队列默认属性值。
+
+```python
+CELERY_TASK_DEFAULT_QUEUE = "default"  # 设置默认队列名为 default
+CELERY_TASK_DEFAULT_EXCHANGE = "tasks"
+CELERY_TASK_DEFAULT_EXCHANGE_TYPE = "topic"
+CELERY_TASK_DEFAULT_ROUTING_KEY = "task.default"
+```

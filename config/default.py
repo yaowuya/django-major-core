@@ -9,14 +9,10 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
-from pathlib import Path
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+
+import config
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-oh%-@$q+wtr@1s_-7w--$4lvkkg6q_(if4$1z#6ftw%2%3uc1u'
@@ -35,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contrib.contrib_commands'
+    'contrib'
 ]
 
 MIDDLEWARE = [
@@ -53,8 +49,7 @@ ROOT_URLCONF = 'django_core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [config.BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,16 +98,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+USE_TZ = False
+TIME_ZONE = "Asia/Shanghai"
+LANGUAGE_CODE = "zh-hans"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -123,3 +111,35 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 前后端分离开发配置开关，设置为True时dev和stag环境会自动加载允许跨域的相关选项
+FRONTEND_BACKEND_SEPARATION = True
+"""
+以下为celery配置
+"""
+# Celery 消息队列设置 RabbitMQ
+# BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+# Celery 消息队列设置 Redis
+BROKER_URL = "redis://localhost:6379/0"
+
+# CELERY 开关，使用时请改为 True，修改项目目录下的 Procfile 文件，添加以下两行命令：
+# worker: python manage.py celery worker -l info
+# beat: python manage.py celery beat -l info
+# 不使用时，请修改为 False，并删除项目目录下的 Procfile 文件中 celery 配置
+IS_USE_CELERY = True
+
+# CELERY 并发数，默认为 2，可以通过环境变量或者 Procfile 设置
+CELERYD_CONCURRENCY = os.getenv("BK_CELERYD_CONCURRENCY", 4)  # noqa
+
+# CELERY 配置，申明任务的文件路径，即包含有 @task 装饰器的函数文件
+CELERY_IMPORTS = ()
+
+CELERY_TIMEZONE = TIME_ZONE
+DJANGO_CELERY_BEAT_TZ_AWARE = False
+
+# celery settings
+if IS_USE_CELERY:
+    # INSTALLED_APPS = locals().get("INSTALLED_APPS", [])
+    INSTALLED_APPS += ("django_celery_beat", "django_celery_results")
+    CELERY_ENABLE_UTC = False
+    CELERYBEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
