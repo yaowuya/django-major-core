@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'contrib'
+    'contrib',
+    'apps.celery_task'
 ]
 
 MIDDLEWARE = [
@@ -63,7 +64,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'django_core.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -71,10 +72,10 @@ WSGI_APPLICATION = 'django_core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 默认用mysql
-        'NAME': 'django-core',  # 数据库名 (默认与APP_ID相同)
-        'USER': 'root',  # 你的数据库user
-        'PASSWORD': 'root',  # 你的数据库password
-        'HOST': '127.0.0.1',  # 数据库HOST
+        'NAME': '',  # 数据库名 (默认与APP_ID相同)
+        'USER': '',  # 你的数据库user
+        'PASSWORD': '',  # 你的数据库password
+        'HOST': '',  # 数据库HOST
         'PORT': '3306',  # 默认3306
     },
 }
