@@ -1,7 +1,10 @@
 import os
 from core.celery import celery_app
 
-__all__ = ["celery_app", "BASE_DIR"]
+__all__ = ["celery_app", "BASE_DIR", "APP_CODE"]
+
+# 项目的唯一code
+APP_CODE = "django_core"
 
 
 # app 基本信息

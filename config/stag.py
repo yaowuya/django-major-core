@@ -16,9 +16,10 @@ from config.default import *
 RUN_MODE = "STAGING"
 
 # 只对预发布环境日志级别进行配置，可以在这里修改
-# from blueapps.conf.log import set_log_level # noqa
-# LOG_LEVEL = "ERROR"
-# LOGGING = set_log_level(locals())
+from commons.log import set_log_level  # noqa
+
+LOG_LEVEL = "ERROR"
+LOGGING = set_log_level(locals())
 
 # 预发布环境数据库可以在这里配置
 
