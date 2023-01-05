@@ -26,3 +26,6 @@ six==1.11.0
 djangorestframework==3.11.1
 django-rest-swagger==2.2.0
 django-filter==2.3.0
+
+importlib-metadata==4.8.3
+typing-extensions==3.7.4.3

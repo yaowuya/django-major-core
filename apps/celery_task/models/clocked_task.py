@@ -6,6 +6,7 @@ from django_celery_beat.models import (
     ClockedSchedule as DjangoCeleryBeatClockedSchedule,
 )
 
+from commons.common_model import MaintainerInfo
 from commons.utils.uniqid import uniqid
 
 
@@ -36,7 +37,7 @@ class ClockedTaskManager(models.Manager):
         return task
 
 
-class ClockedTask(models.Model):
+class ClockedTask(MaintainerInfo):
     task_name = models.CharField(help_text="任务名称", max_length=128)
     clocked_task_id = models.IntegerField(help_text="计划任务 Celery任务 ID", null=True)
     creator = models.CharField(help_text="计划任务创建人", max_length=32)

@@ -9,6 +9,7 @@ from django_celery_beat.models import (
 # Create your models here.
 from apps.celery_task.constants import CELERY_DEFAULT_PRIORITY
 from apps.celery_task.signals import periodic_task_start_failed
+from commons.common_model import MaintainerInfo
 from commons.utils.uniqid import uniqid
 
 
@@ -55,7 +56,7 @@ class PeriodicTaskManager(models.Manager):
         return task
 
 
-class PeriodicTask(models.Model):
+class PeriodicTask(MaintainerInfo):
     name = models.CharField(verbose_name="周期任务名称", max_length=64)
     cron = models.CharField(verbose_name="调度策略", max_length=128)
     celery_task = models.ForeignKey(DjangoCeleryBeatPeriodicTask, verbose_name="celery 周期任务实例", null=True,
@@ -67,6 +68,10 @@ class PeriodicTask(models.Model):
     queue = models.CharField(verbose_name="流程使用的队列名", max_length=512, default="")
 
     objects = PeriodicTaskManager()
+
+    def set_enabled(self, enabled):
+        self.celery_task.enabled = enabled
+        self.celery_task.save()
 
 
 class PeriodicTaskHistoryManager(models.Manager):
@@ -85,7 +90,7 @@ class PeriodicTaskHistoryManager(models.Manager):
         return history
 
 
-class PeriodicTaskHistory(models.Model):
+class PeriodicTaskHistory(MaintainerInfo):
     periodic_task = models.ForeignKey(
         PeriodicTask, related_name="instance_rel", verbose_name="周期任务", null=True, on_delete=models.DO_NOTHING,
     )

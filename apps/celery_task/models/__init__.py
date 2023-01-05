@@ -1,1 +1,1 @@
-from periodic_task import *
+from apps.celery_task.models.periodic_task import *

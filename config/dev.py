@@ -16,7 +16,7 @@ from config.default import *
 # 本地开发环境
 RUN_MODE = "DEVELOP"
 # 自定义本地环境日志级别
-from commons.log import set_log_level  # noqa
+from core.log import set_log_level  # noqa
 
 LOG_LEVEL = "DEBUG"
 LOGGING = set_log_level(locals())

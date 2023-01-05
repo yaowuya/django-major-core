@@ -16,7 +16,7 @@ from config.default import *
 RUN_MODE = "STAGING"
 
 # 只对预发布环境日志级别进行配置，可以在这里修改
-from commons.log import set_log_level  # noqa
+from core.log import set_log_level  # noqa
 
 LOG_LEVEL = "ERROR"
 LOGGING = set_log_level(locals())
