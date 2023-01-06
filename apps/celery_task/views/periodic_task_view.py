@@ -1,4 +1,5 @@
 from rest_framework import status
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
@@ -36,3 +37,19 @@ class PeriodicTaskViewSet(ModelViewSet):
         instance = serializer.save()
         instance.set_enabled(True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(methods=["post"], detail=False)
+    def create_task(self, request, *args, **kwargs):
+        """创建任务
+        {
+          "name": "test",
+          "cron": {"minute":"*/5","hour":"*","day_of_week":"*","day_of_month":"*","month_of_year":"*"},
+        }
+        """
+        params = request.data
+        cron_data = params.get("cron")
+        name = params.get("name")
+        creator = params.get("creator", "test")
+        periodic_task = PeriodicTask.objects.create_task(name, cron_data, creator)
+        periodic_task.set_enabled(True)
+        return Response({"result": "创建成功"})

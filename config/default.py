@@ -138,8 +138,8 @@ CELERYD_CONCURRENCY = os.getenv("BK_CELERYD_CONCURRENCY", 4)  # noqa
 # CELERY 配置，申明任务的文件路径，即包含有 @task 装饰器的函数文件
 CELERY_IMPORTS = ()
 
-CELERY_TIMEZONE = TIME_ZONE
-DJANGO_CELERY_BEAT_TZ_AWARE = False
+# 引入celery的配置
+from config.celery.settings import *  # noqa
 
 # celery settings
 if IS_USE_CELERY:
@@ -167,4 +167,3 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("packages.drf.renderers.CustomRenderer",),
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
-

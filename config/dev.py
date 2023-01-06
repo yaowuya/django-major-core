@@ -18,6 +18,9 @@ RUN_MODE = "DEVELOP"
 # 自定义本地环境日志级别
 from core.log import set_log_level  # noqa
 
+# IS_LOCAL
+IS_LOCAL = not os.getenv("BK_ENV", False)
+
 LOG_LEVEL = "DEBUG"
 LOGGING = set_log_level(locals())
 

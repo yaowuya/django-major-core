@@ -2,7 +2,7 @@ import traceback
 
 from django.dispatch import receiver
 
-from apps import logger, celery_logger
+from commons.log import logger, celery_logger
 from apps.celery_task.models import PeriodicTask
 from apps.celery_task.signals import periodic_task_start_failed, pre_periodic_task_start
 

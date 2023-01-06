@@ -7,10 +7,10 @@ from django_celery_beat.models import (
 )
 
 # Create your models here.
-from apps.celery_task.constants import CELERY_DEFAULT_PRIORITY
 from apps.celery_task.signals import periodic_task_start_failed
 from commons.common_model import MaintainerInfo
 from commons.utils.uniqid import uniqid
+from config.celery.settings import CELERY_DEFAULT_PRIORITY, CELERY_TIMEZONE
 
 
 class PeriodicTaskManager(models.Manager):
@@ -19,7 +19,7 @@ class PeriodicTaskManager(models.Manager):
             name,
             cron,
             creator,
-            timezone=None,
+            timezone=CELERY_TIMEZONE,
             spread=False,
             priority=CELERY_DEFAULT_PRIORITY,
             queue="",
@@ -47,7 +47,7 @@ class PeriodicTaskManager(models.Manager):
         celery_task = DjangoCeleryBeatPeriodicTask.objects.create(
             crontab=schedule,
             name=uniqid(),
-            task=trigger_task or "pipeline.contrib.periodic_task.tasks.periodic_task_start",
+            task=trigger_task or "apps.celery_task.tasks.periodic_task_start",
             enabled=False,
             kwargs=json.dumps(kwargs),
         )
