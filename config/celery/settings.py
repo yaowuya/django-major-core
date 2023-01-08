@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+from celery.schedules import crontab
 from kombu import Exchange, Queue
 
 default_exchange = Exchange("default", type="direct")
@@ -56,3 +59,17 @@ CELERY_QUEUES = [
 CELERY_DEFAULT_QUEUE = "default"  # 默认队列
 CELERY_DEFAULT_EXCHANGE = "default"  # 默认 exchange
 CELERY_DEFAULT_ROUTING_KEY = "default"  # 默认routing key
+
+# 定时任务测试
+CELERYBEAT_SCHEDULE = {
+    'create_job_task': {
+        'task': 'apps.celery_task.tasks.create_job_task',
+        'schedule': timedelta(seconds=20),
+        'args': (1, 10)
+    },
+    'parse_job_task': {
+        'task': 'apps.celery_task.tasks.parse_job_task',
+        'schedule': crontab(minute='*/2'),
+        'args': ()
+    }
+}

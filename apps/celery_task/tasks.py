@@ -39,9 +39,9 @@ def periodic_task_start(*args, **kwargs):
 
 
 @task(ignore_result=True)
-def create_job_task(*args, **kwargs):
+def create_job_task(x, y):
     """创建作业任务"""
-    celery_logger.info("create_job_task")
+    celery_logger.info(f"{x},{y},create_job_task")
 
 
 @task(ignore_result=True)

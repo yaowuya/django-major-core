@@ -121,10 +121,13 @@ FRONTEND_BACKEND_SEPARATION = True
 """
 以下为celery配置
 """
+# 引入celery的配置
+from config.celery.settings import *  # noqa
+
 # Celery 消息队列设置 RabbitMQ
-# BROKER_URL = 'amqp://guest:guest@localhost:5672//'
+BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 # Celery 消息队列设置 Redis
-BROKER_URL = "redis://localhost:6379/0"
+# BROKER_URL = "redis://localhost:6379/0"
 
 # CELERY 开关，使用时请改为 True，修改项目目录下的 Procfile 文件，添加以下两行命令：
 # worker: python manage.py celery worker -l info
@@ -137,9 +140,6 @@ CELERYD_CONCURRENCY = os.getenv("BK_CELERYD_CONCURRENCY", 4)  # noqa
 
 # CELERY 配置，申明任务的文件路径，即包含有 @task 装饰器的函数文件
 CELERY_IMPORTS = ()
-
-# 引入celery的配置
-from config.celery.settings import *  # noqa
 
 # celery settings
 if IS_USE_CELERY:
