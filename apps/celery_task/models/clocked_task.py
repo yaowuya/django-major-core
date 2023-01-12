@@ -28,7 +28,7 @@ class ClockedTaskManager(models.Manager):
             clocked_task = DjangoCeleryBeatPeriodicTask.objects.create(
                 clocked=clocked,
                 name=task_name + uniqid(),
-                task="gcloud.clocked_task.tasks.clocked_task_start",
+                task="apps.celery_task.tasks.clocked_task_start",
                 one_off=True,
                 kwargs=json.dumps(clocked_task_kwargs),
             )
