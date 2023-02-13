@@ -102,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
-USE_TZ = False
+USE_TZ = True
 TIME_ZONE = "Asia/Shanghai"
 LANGUAGE_CODE = "zh-hans"
 
@@ -125,9 +125,9 @@ FRONTEND_BACKEND_SEPARATION = True
 from config.celery.settings import *  # noqa
 
 # Celery 消息队列设置 RabbitMQ
-BROKER_URL = 'amqp://guest:guest@localhost:5672/'
+# BROKER_URL = 'amqp://guest:guest@localhost:5672/'
 # Celery 消息队列设置 Redis
-# BROKER_URL = "redis://localhost:6379/0"
+BROKER_URL = "redis://localhost:6379/0"
 
 # CELERY 开关，使用时请改为 True，修改项目目录下的 Procfile 文件，添加以下两行命令：
 # worker: python manage.py celery worker -l info
